@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>You Scanned a Random QR Code 😬</title>
+  <meta name="description" content="A humorous but educational landing page that chastises users for scanning random QR codes and teaches safe-scanning habits." />
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#0e1428;
+      --ink:#e6edf3;
+      --muted:#9fb0c9;
+      --accent:#f97316;   /* orange */
+      --ok:#22c55e;       /* green */
+      --bad:#ef4444;      /* red */
+      --warn:#f59e0b;     /* amber */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 700px at 80% -10%, #111936 0%, var(--bg) 60%);
+      color:var(--ink);
+      display:flex; align-items:center; justify-content:center; padding:24px;
+    }
+    .wrap{max-width:980px; width:100%;}
+    .card{background:linear-gradient(180deg, #0f162e, var(--panel)); border:1px solid #1f2a44; border-radius:24px; padding:28px; box-shadow:0 10px 40px rgba(0,0,0,.35); position:relative; overflow:hidden}
+
+    .beacon{position:absolute; inset:-20% -20% auto auto; width:420px; aspect-ratio:1; border-radius:50%; background:radial-gradient(closest-side, rgba(239,68,68,.15), transparent 60%); filter:blur(18px); pointer-events:none}
+
+    h1{font-size:clamp(1.9rem, 3.2vw + 1rem, 3.4rem); line-height:1.05; margin:0 0 8px}
+    .subtitle{color:var(--muted); margin:0 0 18px; font-size:clamp(1rem, 1.1vw + .55rem, 1.25rem)}
+
+    .cta{display:flex; flex-wrap:wrap; gap:12px; margin:20px 0 8px}
+    .btn{appearance:none; border:none; cursor:pointer; border-radius:999px; padding:12px 18px; font-weight:700; letter-spacing:.2px; transition:transform .05s ease, box-shadow .2s ease, background .2s ease; display:inline-flex; align-items:center; gap:10px}
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{background:linear-gradient(180deg, var(--accent), #ea580c); color:#230f04; box-shadow:0 6px 20px rgba(249,115,22,.35)}
+    .btn.secondary{background:#0a0f1c; color:#cbd5e1; border:1px solid #1f2a44}
+    .btn.ghost{background:transparent; color:var(--muted); border:1px dashed #273352}
+
+    .band{display:grid; grid-template-columns:1.2fr .8fr; gap:18px}
+    @media (max-width:880px){ .band{grid-template-columns:1fr} }
+
+    .tile{background:#0a0f1c; border:1px solid #1e293b; border-radius:18px; padding:16px}
+    .tile h3{margin:0 0 6px; font-size:1.05rem}
+    .tile p{margin:0; color:var(--muted)}
+    .list{margin:8px 0 0; padding-left:18px; color:var(--muted)}
+
+    .footer{margin-top:22px; color:var(--muted); font-size:.9rem}
+
+    /* Toast */
+    .toast{position:fixed; inset:auto 50% 18px auto; transform:translateX(-50%); background:#020617cc; border:1px solid #1f2937; color:#e2e8f0; padding:10px 14px; border-radius:12px; font-size:.95rem; backdrop-filter: blur(8px); display:none}
+    .toast.show{display:block}
+
+    /* Quiz */
+    .quiz{display:grid; gap:10px; margin-top:8px}
+    .q{border:1px solid #1f2a44; border-radius:12px; padding:10px}
+    .q label{display:flex; gap:8px; align-items:flex-start; cursor:pointer}
+
+    /* Modal */
+    dialog{border:none; padding:0; border-radius:20px; overflow:hidden; background:#0b1220; color:var(--ink)}
+    dialog::backdrop{background:rgba(2,6,23,.6)}
+    .modal{padding:22px; max-width:560px}
+    .modal h2{margin:0 0 8px}
+    .modal p{margin:0 0 12px; color:var(--muted)}
+    .modal .row{display:flex; gap:10px; justify-content:flex-end}
+
+    /* Siren animation */
+    .siren{display:inline-flex; align-items:center; gap:8px; font-weight:800; color:var(--bad)}
+    .dot{width:10px; height:10px; border-radius:50%; background:var(--bad); box-shadow:0 0 0 0 rgba(239,68,68,.7); animation:pulse 1.2s infinite}
+    @keyframes pulse{ to{ box-shadow:0 0 0 18px rgba(239,68,68,0)} }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){ .dot{animation-duration:0s} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="region" aria-label="QR Safety Lesson">
+      <div class="beacon" aria-hidden="true"></div>
+
+      <p class="siren"><span class="dot" aria-hidden="true"></span> ALERT: You scanned a random QR code.</p>
+      <h1>Bold move, hero. 🕵️‍♀️</h1>
+      <p class="subtitle">This page is harmless, but many aren’t. Let’s roast your decision <em>and</em> help you scan smarter next time.</p>
+
+      <div class="cta" role="group" aria-label="Actions">
+        <button class="btn primary" id="btn-own-up">I Regret Everything</button>
+        <button class="btn secondary" id="btn-teach">Teach Me Not To</button>
+        <button class="btn ghost" id="btn-proceed">Proceed Anyway (…why?)</button>
+      </div>
+
+      <div class="band" style="margin-top:16px">
+        <section class="tile" aria-labelledby="why-bad">
+          <h3 id="why-bad">Why random QR codes are spicy 🌶️</h3>
+          <ul class="list">
+            <li><strong>Phishing:</strong> Sends you to look‑alike sites to steal logins.</li>
+            <li><strong>Drive‑by tricks:</strong> Auto‑open app stores, payment apps, or Wi‑Fi configs.</li>
+            <li><strong>Consent traps:</strong> Hidden redirects that request camera, mic, or location.</li>
+            <li><strong>Typosquatting:</strong> One letter off (go0gle vs google) is all it takes.</li>
+          </ul>
+        </section>
+
+        <aside class="tile" aria-labelledby="safe-steps">
+          <h3 id="safe-steps">Scan safer next time ✅</h3>
+          <ol class="list">
+            <li>Preview the URL first (most camera apps show it). If it looks weird, bail.</li>
+            <li>Look for <code>https://</code> and the correct domain (letters matter!).</li>
+            <li>Avoid codes on random stickers or over existing signage.</li>
+            <li>Use your browser’s **Open in new tab** and a password manager (it won’t fill on fakes).</li>
+          </ol>
+        </aside>
+      </div>
+
+      <section class="tile" style="margin-top:16px" aria-labelledby="quiz">
+        <h3 id="quiz">30‑second quiz: Would you tap it?</h3>
+        <div class="quiz" id="quiz-box" role="group" aria-label="Quiz options">
+          <div class="q"><label><input type="checkbox" value="free-airpods"> “Free AirPods, today only!”</label></div>
+          <div class="q"><label><input type="checkbox" value="bill-pay"> “Pay overdue bill now” from <code>city‑services‑billing.help</code></label></div>
+          <div class="q"><label><input type="checkbox" value="menu"> Restaurant menu QR on the printed menu</label></div>
+          <div class="q"><label><input type="checkbox" value="wifi"> Public poster offering “instant free Wi‑Fi config”</label></div>
+        </div>
+        <div class="cta"><button class="btn primary" id="grade">Grade me</button> <span id="score" aria-live="polite"></span></div>
+      </section>
+
+      <p class="footer">No trackers, no cookies, just vibes. This page is a friendly PSA. Share it by pointing a QR code to your GitHub Pages URL.</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Character growth unlocked. 🌱</div>
+
+  <dialog id="modal">
+    <div class="modal">
+      <h2>Before you “Proceed”…</h2>
+      <p>This isn’t a trap, but real ones exist. If a site asks for logins, payments, or installs, pause and verify the domain.</p>
+      <div class="row">
+        <button class="btn secondary" id="close-modal">Fine, I’ll be careful</button>
+        <a class="btn primary" id="still-go" href="#" rel="noopener">Take me anyway</a>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    const $ = (s)=>document.querySelector(s);
+    const toast = $('#toast');
+
+    $('#btn-own-up').addEventListener('click', ()=>{
+      toast.textContent = 'Character growth unlocked. 🌱';
+      toast.classList.add('show');
+      setTimeout(()=> toast.classList.remove('show'), 2200);
+    });
+
+    $('#btn-teach').addEventListener('click', ()=>{
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      toast.textContent = 'Scroll for safety tips ↓';
+      toast.classList.add('show');
+      setTimeout(()=> toast.classList.remove('show'), 1800);
+    });
+
+    const modal = $('#modal');
+    $('#btn-proceed').addEventListener('click', ()=> modal.showModal());
+    $('#close-modal').addEventListener('click', ()=> modal.close());
+
+    // You can change this to your real destination if you want a link
+    const DEST = 'https://example.com/safe-destination';
+    $('#still-go').setAttribute('href', DEST);
+
+    // Quiz grading
+    const safeAnswers = new Set(['menu']); // only menu on the printed menu is reasonably OK
+    $('#grade').addEventListener('click', ()=>{
+      const picks = [...document.querySelectorAll('#quiz-box input:checked')].map(x=>x.value);
+      let score = 0;
+      picks.forEach(p=>{ if(safeAnswers.has(p)) score++; else score -= 1; });
+      const msg = score >= 1 ? 'Nice instincts. 👍' : score === 0 ? 'Mixed bag. 🤨' : 'Yikes. Let\'s not tap that. 🚫';
+      $('#score').textContent = `Score: ${score} · ${msg}`;
+    });
+
+    // Respect reduced motion: disable smooth scroll hint
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      window.scrollTo = (opts)=> window.scrollTo(0, document.body.scrollHeight);
+    }
+  </script>
+</body>
+</html>
