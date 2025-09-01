@@ -82,18 +82,12 @@
       <div class="beacon" aria-hidden="true"></div>
 
       <p class="siren"><span class="dot" aria-hidden="true"></span> ALERT: You scanned a random QR code.</p>
-      <h1>Bold move, hero. 🕵️‍♀️</h1>
+      <h1>So... you really scanned that, huh? 🤦‍♂️</h1>
       <p class="subtitle">This page is harmless, but many aren’t. Let’s roast your decision <em>and</em> help you scan smarter next time.</p>
-
-      <div class="cta" role="group" aria-label="Actions">
-        <button class="btn primary" id="btn-own-up">I Regret Everything</button>
-        <button class="btn secondary" id="btn-teach">Teach Me Not To</button>
-        <button class="btn ghost" id="btn-proceed">Proceed Anyway (…why?)</button>
-      </div>
 
       <div class="band" style="margin-top:16px">
         <section class="tile" aria-labelledby="why-bad">
-          <h3 id="why-bad">Why random QR codes are spicy 🌶️</h3>
+          <h3 id="why-bad">Why random QR codes are problematic 🚫</h3>
           <ul class="list">
             <li><strong>Phishing:</strong> Sends you to look‑alike sites to steal logins.</li>
             <li><strong>Drive‑by tricks:</strong> Auto‑open app stores, payment apps, or Wi‑Fi configs.</li>
@@ -115,59 +109,5 @@
       <p class="footer">No trackers, no cookies, just vibes. This page is a friendly PSA. Share it by pointing a QR code to your GitHub Pages URL.</p>
     </div>
   </div>
-
-  <div class="toast" id="toast">Character growth unlocked. 🌱</div>
-
-  <dialog id="modal">
-    <div class="modal">
-      <h2>Before you “Proceed”…</h2>
-      <p>This isn’t a trap, but real ones exist. If a site asks for logins, payments, or installs, pause and verify the domain.</p>
-      <div class="row">
-        <button class="btn secondary" id="close-modal">Fine, I’ll be careful</button>
-        <a class="btn primary" id="still-go" href="#" rel="noopener">Take me anyway</a>
-      </div>
-    </div>
-  </dialog>
-
-  <script>
-    const $ = (s)=>document.querySelector(s);
-    const toast = $('#toast');
-
-    $('#btn-own-up').addEventListener('click', ()=>{
-      toast.textContent = 'Character growth unlocked. 🌱';
-      toast.classList.add('show');
-      setTimeout(()=> toast.classList.remove('show'), 2200);
-    });
-
-    $('#btn-teach').addEventListener('click', ()=>{
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-      toast.textContent = 'Scroll for safety tips ↓';
-      toast.classList.add('show');
-      setTimeout(()=> toast.classList.remove('show'), 1800);
-    });
-
-    const modal = $('#modal');
-    $('#btn-proceed').addEventListener('click', ()=> modal.showModal());
-    $('#close-modal').addEventListener('click', ()=> modal.close());
-
-    // You can change this to your real destination if you want a link
-    const DEST = 'https://example.com/safe-destination';
-    $('#still-go').setAttribute('href', DEST);
-
-    // Quiz grading
-    const safeAnswers = new Set(['menu']); // only menu on the printed menu is reasonably OK
-    $('#grade').addEventListener('click', ()=>{
-      const picks = [...document.querySelectorAll('#quiz-box input:checked')].map(x=>x.value);
-      let score = 0;
-      picks.forEach(p=>{ if(safeAnswers.has(p)) score++; else score -= 1; });
-      const msg = score >= 1 ? 'Nice instincts. 👍' : score === 0 ? 'Mixed bag. 🤨' : 'Yikes. Let\\'s not tap that. 🚫';
-      $('#score').textContent = `Score: ${score} · ${msg}`;
-    });
-
-    // Respect reduced motion: disable smooth scroll hint
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      window.scrollTo = (opts)=> window.scrollTo(0, document.body.scrollHeight);
-    }
-  </script>
 </body>
 </html>
